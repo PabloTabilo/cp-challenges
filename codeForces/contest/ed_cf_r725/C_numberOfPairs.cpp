@@ -80,8 +80,8 @@ int main(){
         bool debug = true;
         for(int i = 0; i<n;i++){
             if(debug) cout<<"A[i]: "<<A[i]<<endl;
-            if(l-A[i]>0){
-                resl = bs(A, 0, i-1, l-A[i]);
+            if(l-A[i]-1>=0){
+                resl = bs(A, 0, i-1, l-A[i]-1);
                 if(debug) cout<<"idx l:"<<resl;
                 // para no repetir pares
                 // ni a si mismo
@@ -92,8 +92,8 @@ int main(){
             else{
                 resl = -1;
             }
-            if(r-A[i]>0){
-                resr = bs(A, 0, i-1, r-A[i]);
+            if(r-A[i]+1>=0){
+                resr = bs(A, 0, i-1, r-A[i]+1);
                 if(debug) cout<<"; idx r:"<<resr<<endl;
                 if(resr>=i)
                     resr = -1;
@@ -108,7 +108,7 @@ int main(){
             else if(resl == resr){
                 res+= (A[i]+A[resl]>=l && A[i]+A[resr]<=r?1:0);
             }else if(resl >= 0 && resr >=0)
-                res += resr - resl + 1;
+                res += resr - resl;
         }
         cout<<res<<endl;
     }

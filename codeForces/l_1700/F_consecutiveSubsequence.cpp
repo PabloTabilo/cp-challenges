@@ -62,54 +62,34 @@ template <class T, class V> void _print(map <T, V> v) {cerr << "[ "; for (auto i
 /*---------------------------------------------------------------------------------------------------------------------------*/
 ll gcd(ll a, ll b) {if (b > a) {return gcd(b, a);} if (b == 0) {return a;} return gcd(b, a % b);}
 
-int solve(int **dp, int **M, int n, int i, int j){
-    if(i>=n || j>=n)
-        return 0;
-    else if(M[i][j] == -1)
-        return 0;
-    else if(i==n-1 && j==n-1)
-        return 1;
-    else if(dp[i][j]!=-2)
-        return dp[i][j]%MOD;
-    dp[i][j] = solve(dp, M, n, i+1, j)%MOD + solve(dp, M, n, i, j+1)%MOD;
-    return dp[i][j]%MOD;
-}
-
-void pSqM(int **A, int n){
-    for(int i=0;i<n;i++){
-        for(int j=0;j<n;j++){
-            cout<<A[i][j]<<" ";
-        }
-        cout<<endl;
-    }
-    cout<<"----------------------"<<endl;
-}
-
 void solve(){
     int n;
-    bool debug = false;
+    bool debug = true;
     cin>>n;
-    int ** M = new int * [n];
-    int ** dp = new int * [n];
-    char w;
-    ll res = 0;
-    for(int i = 0; i<n; i++){
-        dp[i] = new int [n];
-        M[i] = new int [n];
-        for(int j = 0; j < n; j++){
-            cin>>w;
-            M[i][j] = (w == '.'?0:-1);
-            dp[i][j] = -2;
-        }
+    int a[200001];
+    unordered_map<int, queue<int> > um;
+    unordered_map<int, queue<int> > im;
+    MEM(a, -1);
+    int maxV=0;
+    for(int i=1;i<n+1;i++){
+        cin>>a[i];
+        um[a[i]].push(0);
+        maxV = max(maxV, a[i]);
+        im[a[i]].push(i);
     }
-    M[n-1][n-1] = (M[n-1][n-1]!=-1?1:-1);
-    if (debug) pSqM(M, n);
-    if (debug) pSqM(dp, n);
-    if(M[n-1][n-1]!=-1)
-        res = solve(dp, M, n, 0, 0);
-    if (debug) pSqM(M, n);
-    if (debug) pSqM(dp, n);
-    cout<<res%MOD<<endl;
+    int res = 0;
+    for(int i=1;i<maxV+1;i++){
+        if (debug) cout<<"a[i]: "<<a[i]<<"; a[i]-1: "<<a[i]-1;
+        if (debug) cout<<"; im[a[i]].front(): "<<im[a[i]].front()<<"; im[a[i]-1].front(): "<<im[a[i]-1].front();
+        if (debug) cout<<"; um[a[i]].front(): "<<um[a[i]].front()<<"; um[a[i]-1].front(): "<<um[a[i]-1].front()<<endl;
+        if(!im[a[i]-1].empty() && im[a[i]].front() > im[a[i]-1].front()){
+            um[a[i]] = max(um[a[i]].front(), um[a[i]-1].front())+1;
+        }else{
+            um[a[i]] = 1;
+        }
+        res = max(res, um[a[i]]);
+    }
+    cout<<res<<endl;
 }
 
 int main(){
