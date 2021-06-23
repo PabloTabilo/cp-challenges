@@ -75,40 +75,68 @@ int main(){
             cin>>A[i];
         }
         sort(A.begin(), A.end());
-        int resl = 0, resr = 0;
+        int idx_l = 0, idx_r = 0;
         int res = 0;
-        bool debug = true;
+        bool debug = false;
         for(int i = 0; i<n;i++){
             if(debug) cout<<"A[i]: "<<A[i]<<endl;
             if(l-A[i]-1>=0){
-                resl = bs(A, 0, i-1, l-A[i]-1);
-                if(debug) cout<<"idx l:"<<resl;
+                idx_l = bs(A, 0, i-1, l-A[i]-1);
+                if(debug) cout<<"idx l (bs):"<<idx_l;
                 // para no repetir pares
                 // ni a si mismo
-                if(resl>=i)
-                    resl = -1;
+                if(idx_l>=i){
+                    idx_l = -1;
+                }
             }
             // no puedo buscar un valor menor a 1
             else{
-                resl = -1;
+                idx_l = -1;
             }
+            if(debug) cout<<"; idx l (pos):"<<idx_l<<endl;
             if(r-A[i]+1>=0){
-                resr = bs(A, 0, i-1, r-A[i]+1);
-                if(debug) cout<<"; idx r:"<<resr<<endl;
-                if(resr>=i)
-                    resr = -1;
+                idx_r = bs(A, 0, i-1, r-A[i]+1);
+                if(debug) cout<<"idx r:"<<idx_r;
+                if(idx_r>=i)
+                    idx_r = -1;
             }else{
-                resr = -1;
+                idx_r = -1;
             }
-            if (debug) cout<<"resr: "<<resr<<"; resl: "<<resl<<endl;
-            if(resr == -1 && resl >=0)
-                res += i - resl;
-            else if(resl == -1 && resr>=0)
-                res += resr + 1;
-            else if(resl == resr){
-                res+= (A[i]+A[resl]>=l && A[i]+A[resr]<=r?1:0);
-            }else if(resl >= 0 && resr >=0)
-                res += resr - resl;
+            if(debug) cout<<"; idx r (pos):"<<idx_r<<endl;;
+            
+            // idx_r su index es mayor al limite i
+            // El idx_l es factible?
+            // Si lo es, entonces, vamos desde
+            // i hasta idx_l inclusive, otro caso
+            // restamos el idx_l
+            if(idx_r == -1 && idx_l >=0){
+                res += (A[idx_l]+A[i]>=l?i-idx_l:i-idx_l-1);
+            }
+            // idx_l su index es menor a 0
+            // El idx_r esta dentro del rango
+            // y su id es menor a i
+            // id_r es factible?
+            else if(idx_l == -1 && idx_r>=0){
+                res += (A[idx_r]+A[i]<=r?idx_r+1:idx_r);
+            }
+            // si estan los rangos apuntando al mismo idx
+            // Comprobar si es factible
+            else if(idx_l == idx_r){
+                res+= (A[i]+A[idx_l]>=l && A[i]+A[idx_r]<=r?1:0);
+            // Si ambos rangos existen en el array
+            }else if(idx_l >= 0 && idx_r >=0){
+                // Ambos idx son inclusive
+                if(A[idx_l]+A[i]>=l && A[idx_r]+A[i]<=r)
+                    res += idx_r - idx_l + 1;
+                // Si uno u otro es inclusive
+                else if((A[idx_l]+A[i]>=l && A[idx_l]+A[i]<=r) || (A[idx_r]+A[i]<=r && A[idx_r]+A[i]>=l))
+                    res += idx_r - idx_l;
+                // si ninguno es inclusive
+                else
+                    res += idx_r - idx_l - 1;
+            }
+            if (debug) cout<<"; res: "<<res<<endl;
+            if (debug) cout<<"-------"<<endl;
         }
         cout<<res<<endl;
     }
