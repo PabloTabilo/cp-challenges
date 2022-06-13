@@ -66,58 +66,31 @@ ll gcd(ll a, ll b) {if (b > a) {return gcd(b, a);} if (b == 0) {return a;} retur
 void solve(){
     int n;
     cin>>n;
-    ll a;
-    vector<int> aE(n);
-    vector<int> aO(n);
-    int k=0;
-    int w=0;
+    cin.ignore();
+    vector<vector<int>> v1(n,vector<int>(n,0));
+    string t="";
     for(int i=0;i<n;i++){
-        cin>>a;
-        if(a%2==0){
-            aE[k]=a;
-            k++;
-        }
-        else {
-            aO[w]=a;
-            w++;
+        getline(cin,t);
+        for(int j=0;j<n;j++){
+            v1[i][j]=t[j]-'0';
         }
     }
-    sort(aE.begin(), aE.end(), greater<int>());
-    sort(aO.begin(), aO.end(), greater<int>());
-    debug(aE);
-    debug(aO);
-    int totalTurns=0;
-    int i=0, j=0;
-    ll res=0;
-    bool alicePlay=true;
-    while(totalTurns < n){
-        debug(i);
-        debug(j);
-        debug(totalTurns);
-        debug(res);
-        debug("---------");
-        if(alicePlay){
-            if(i<aE.size()){
-                if(aE[i] >= aO[j]){
-                    res+=aE[i];
-                    i++;
-                }else j++;
-            }else j++;
-            alicePlay=false;
-        }else{
-            if(j<aO.size()){
-                if(aO[j] >= aE[i]){
-                    res-=aO[j];
-                    j++;
-                }else i++;
-            }else i++;
-            alicePlay=true;
+    bool impos = false;
+    for(int i=0;i<n;i++){
+        for(int j=0;j<n;j++){
+            if(v1[i][j]==1 && i!=n-1 && j!=n-1){
+                //cout<<"i,j="<<i<<","<<j<<endl;
+                //cout<<"v1[i+1][j]="<<v1[i+1][j]<<endl;
+                //cout<<"v1[i][j+1]="<<v1[i][j+1]<<endl;
+                if(v1[i+1][j]!=1 && v1[i][j+1]!=1){
+                    impos = true;
+                    break;
+                }
+            }
         }
-        totalTurns++;
     }
-    if(res > 0) cout<<"Alice";
-    else if(res == 0) cout<<"Tie";
-    else cout<<"Bob";
+    if(!impos) cout<<"YES";
+    else cout<<"NO";
     cout<<endl;
 }
 
@@ -132,6 +105,7 @@ int main(){
     //freopen("output.txt", "w", stdout);
     int t;
     cin>>t;
+    cin.ignore();
     //t = 1;
     while(t--){
         solve();

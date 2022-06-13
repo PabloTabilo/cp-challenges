@@ -64,60 +64,13 @@ template <class T, class V> void _print(map <T, V> v) {cerr << "[ "; for (auto i
 ll gcd(ll a, ll b) {if (b > a) {return gcd(b, a);} if (b == 0) {return a;} return gcd(b, a % b);}
 
 void solve(){
-    int n;
-    cin>>n;
-    ll a;
-    vector<int> aE(n);
-    vector<int> aO(n);
-    int k=0;
-    int w=0;
-    for(int i=0;i<n;i++){
-        cin>>a;
-        if(a%2==0){
-            aE[k]=a;
-            k++;
-        }
-        else {
-            aO[w]=a;
-            w++;
-        }
-    }
-    sort(aE.begin(), aE.end(), greater<int>());
-    sort(aO.begin(), aO.end(), greater<int>());
-    debug(aE);
-    debug(aO);
-    int totalTurns=0;
-    int i=0, j=0;
-    ll res=0;
-    bool alicePlay=true;
-    while(totalTurns < n){
-        debug(i);
-        debug(j);
-        debug(totalTurns);
-        debug(res);
-        debug("---------");
-        if(alicePlay){
-            if(i<aE.size()){
-                if(aE[i] >= aO[j]){
-                    res+=aE[i];
-                    i++;
-                }else j++;
-            }else j++;
-            alicePlay=false;
-        }else{
-            if(j<aO.size()){
-                if(aO[j] >= aE[i]){
-                    res-=aO[j];
-                    j++;
-                }else i++;
-            }else i++;
-            alicePlay=true;
-        }
-        totalTurns++;
-    }
-    if(res > 0) cout<<"Alice";
-    else if(res == 0) cout<<"Tie";
-    else cout<<"Bob";
+    int x1,y1,z1;
+    int x2,y2,z2;
+    cin>>x1>>y1>>z1;
+    cin>>x2>>y2>>z2;
+    int res = (x2-x1)*(x2-x1) + (y2-y1)*(y2-y1) + (z2-z1)*(z2-z1);
+    if(res==3) cout<<"NO";
+    else cout<<"YES";
     cout<<endl;
 }
 
@@ -131,8 +84,8 @@ int main(){
     //freopen("input.txt", "r", stdin);
     //freopen("output.txt", "w", stdout);
     int t;
-    cin>>t;
-    //t = 1;
+    //cin>>t;
+    t = 1;
     while(t--){
         solve();
     }

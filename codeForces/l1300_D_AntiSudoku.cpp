@@ -63,62 +63,54 @@ template <class T, class V> void _print(map <T, V> v) {cerr << "[ "; for (auto i
 /*---------------------------------------------------------------------------------------------------------------------------*/
 ll gcd(ll a, ll b) {if (b > a) {return gcd(b, a);} if (b == 0) {return a;} return gcd(b, a % b);}
 
-void solve(){
-    int n;
-    cin>>n;
-    ll a;
-    vector<int> aE(n);
-    vector<int> aO(n);
-    int k=0;
-    int w=0;
-    for(int i=0;i<n;i++){
-        cin>>a;
-        if(a%2==0){
-            aE[k]=a;
-            k++;
-        }
-        else {
-            aO[w]=a;
-            w++;
-        }
-    }
-    sort(aE.begin(), aE.end(), greater<int>());
-    sort(aO.begin(), aO.end(), greater<int>());
-    debug(aE);
-    debug(aO);
-    int totalTurns=0;
-    int i=0, j=0;
-    ll res=0;
-    bool alicePlay=true;
-    while(totalTurns < n){
-        debug(i);
-        debug(j);
-        debug(totalTurns);
-        debug(res);
-        debug("---------");
-        if(alicePlay){
-            if(i<aE.size()){
-                if(aE[i] >= aO[j]){
-                    res+=aE[i];
-                    i++;
-                }else j++;
-            }else j++;
-            alicePlay=false;
-        }else{
-            if(j<aO.size()){
-                if(aO[j] >= aE[i]){
-                    res-=aO[j];
-                    j++;
-                }else i++;
-            }else i++;
-            alicePlay=true;
-        }
-        totalTurns++;
-    }
-    if(res > 0) cout<<"Alice";
-    else if(res == 0) cout<<"Tie";
-    else cout<<"Bob";
+int checkMe(vector<bool>& c){
+    for(int j=1;j<=9;j++) if(!c[j]) return j;
+    return -1;
+}
+
+void pV(vector<vector<int>>& v1){
     cout<<endl;
+    for(int i=0;i<9;i++){
+        for(int j=0;j<9;j++) cout<<v1[i][j];
+        cout<<endl;
+    }
+    cout<<endl;
+}
+
+void solve(){
+    int n = 9;
+    vector<vector<int>> v1(n,vector<int>(n,0));
+    string temp="";
+    for(int i=0;i<n;i++){
+        getline(cin, temp);
+        for(int j=0;j<n;j++){
+            v1[i][j] = temp[j] - '0';
+        }
+        temp="";
+    }
+    vector<bool> c(10,false);
+    int i=0;
+    int j=0;
+    while(i<9){
+        int c00 = v1[i][j];
+        int c13 = v1[i+1][j+3];
+        int c26 = v1[i+2][j+6];
+        c[c00] = true;
+        int c1 = checkMe(c);
+        c[c00] = false;
+        c[c13] = true;
+        int c2 = checkMe(c);
+        c[c13] = false;
+        c[c26] = true; 
+        int c3 = checkMe(c);
+        c[c26] = false; 
+        v1[i][j] = c1;
+        v1[i+1][j+3] = c2;
+        v1[i+2][j+6] = c3;
+        i+=3;
+        j++;
+    }
+    pV(v1);
 }
 
 int main(){
@@ -132,6 +124,7 @@ int main(){
     //freopen("output.txt", "w", stdout);
     int t;
     cin>>t;
+    cin.ignore();
     //t = 1;
     while(t--){
         solve();

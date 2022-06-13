@@ -63,61 +63,30 @@ template <class T, class V> void _print(map <T, V> v) {cerr << "[ "; for (auto i
 /*---------------------------------------------------------------------------------------------------------------------------*/
 ll gcd(ll a, ll b) {if (b > a) {return gcd(b, a);} if (b == 0) {return a;} return gcd(b, a % b);}
 
+ll myPow(int n){
+    if(n<=1) return 2;
+    return 2*myPow(n-1);
+}
+
 void solve(){
-    int n;
-    cin>>n;
-    ll a;
-    vector<int> aE(n);
-    vector<int> aO(n);
-    int k=0;
-    int w=0;
-    for(int i=0;i<n;i++){
-        cin>>a;
-        if(a%2==0){
-            aE[k]=a;
-            k++;
-        }
-        else {
-            aO[w]=a;
-            w++;
-        }
+    string s;
+    string t;
+    getline(cin, s);
+    getline(cin, t);
+    int ns = s.length(); 
+    int nt = t.length(); 
+    int nta = 0;
+    for(int i=0;i<nt;i++) if (t[i]=='a') nta++;
+    
+    if(nta == 1 && nt == 1){
+        cout<<1;
+    } else if(nta >= 2 && nt == nta){
+        cout<<-1;
+    } else if(nta >= 1 && nt > nta){
+        cout<<-1;
+    } else {
+        cout<<myPow(ns);
     }
-    sort(aE.begin(), aE.end(), greater<int>());
-    sort(aO.begin(), aO.end(), greater<int>());
-    debug(aE);
-    debug(aO);
-    int totalTurns=0;
-    int i=0, j=0;
-    ll res=0;
-    bool alicePlay=true;
-    while(totalTurns < n){
-        debug(i);
-        debug(j);
-        debug(totalTurns);
-        debug(res);
-        debug("---------");
-        if(alicePlay){
-            if(i<aE.size()){
-                if(aE[i] >= aO[j]){
-                    res+=aE[i];
-                    i++;
-                }else j++;
-            }else j++;
-            alicePlay=false;
-        }else{
-            if(j<aO.size()){
-                if(aO[j] >= aE[i]){
-                    res-=aO[j];
-                    j++;
-                }else i++;
-            }else i++;
-            alicePlay=true;
-        }
-        totalTurns++;
-    }
-    if(res > 0) cout<<"Alice";
-    else if(res == 0) cout<<"Tie";
-    else cout<<"Bob";
     cout<<endl;
 }
 
@@ -133,6 +102,7 @@ int main(){
     int t;
     cin>>t;
     //t = 1;
+    cin.ignore();
     while(t--){
         solve();
     }

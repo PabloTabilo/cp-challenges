@@ -63,62 +63,59 @@ template <class T, class V> void _print(map <T, V> v) {cerr << "[ "; for (auto i
 /*---------------------------------------------------------------------------------------------------------------------------*/
 ll gcd(ll a, ll b) {if (b > a) {return gcd(b, a);} if (b == 0) {return a;} return gcd(b, a % b);}
 
+struct myComp
+{
+    int operator()(const tuple<int,int> & tuple1, const tuple<int,int> & tuple2){
+        if(get<0>(tuple1)==get<0>(tuple2)){
+            if(get<1>(tuple1)>=get<1>(tuple2)) return true;
+            return false;
+        }
+        return get<0>(tuple1)>=get<0>(tuple2);
+    }
+};
+
+int pPQ(priority_queue<tuple<int,int>, vector<tuple<int,int>>, myComp> pq1){
+    bool pos = true;
+    int lA = -1;
+    int lB = -1;
+    int cA, cB;
+    int finalDay = -1;
+    //cout<<endl;
+    while(!pq1.empty()){
+        tuple<int,int> topVal = pq1.top();
+        //cout<<get<0>(topVal)<<","<<get<1>(topVal)<<endl;
+        if(lA+lB == -2){
+            lA = get<0>(topVal);
+            lB = get<1>(topVal);
+            if(finalDay <= lB) finalDay = lB;
+            else finalDay = lA;
+        }else{
+            cA = get<0>(topVal);
+            cB = get<1>(topVal);
+            if(finalDay <= cB) finalDay = cB;
+            else finalDay = cA;
+            lA = cA;
+            lB = cB;
+        }
+        pq1.pop();
+    }
+    //cout<<endl;
+    return finalDay;
+}
+
 void solve(){
     int n;
     cin>>n;
-    ll a;
-    vector<int> aE(n);
-    vector<int> aO(n);
-    int k=0;
-    int w=0;
+    priority_queue<tuple<int,int>, vector<tuple<int,int>>, myComp> pq1;
+    int a, b;
+    tuple<int, int> t1;
     for(int i=0;i<n;i++){
-        cin>>a;
-        if(a%2==0){
-            aE[k]=a;
-            k++;
-        }
-        else {
-            aO[w]=a;
-            w++;
-        }
+        cin>>a>>b;
+        t1 = make_tuple(a,b);
+        pq1.push(t1);
     }
-    sort(aE.begin(), aE.end(), greater<int>());
-    sort(aO.begin(), aO.end(), greater<int>());
-    debug(aE);
-    debug(aO);
-    int totalTurns=0;
-    int i=0, j=0;
-    ll res=0;
-    bool alicePlay=true;
-    while(totalTurns < n){
-        debug(i);
-        debug(j);
-        debug(totalTurns);
-        debug(res);
-        debug("---------");
-        if(alicePlay){
-            if(i<aE.size()){
-                if(aE[i] >= aO[j]){
-                    res+=aE[i];
-                    i++;
-                }else j++;
-            }else j++;
-            alicePlay=false;
-        }else{
-            if(j<aO.size()){
-                if(aO[j] >= aE[i]){
-                    res-=aO[j];
-                    j++;
-                }else i++;
-            }else i++;
-            alicePlay=true;
-        }
-        totalTurns++;
-    }
-    if(res > 0) cout<<"Alice";
-    else if(res == 0) cout<<"Tie";
-    else cout<<"Bob";
-    cout<<endl;
+    int res = pPQ(pq1);
+    cout<<res<<endl;
 }
 
 int main(){
@@ -131,8 +128,8 @@ int main(){
     //freopen("input.txt", "r", stdin);
     //freopen("output.txt", "w", stdout);
     int t;
-    cin>>t;
-    //t = 1;
+    //cin>>t;
+    t = 1;
     while(t--){
         solve();
     }

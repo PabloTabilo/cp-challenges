@@ -64,61 +64,20 @@ template <class T, class V> void _print(map <T, V> v) {cerr << "[ "; for (auto i
 ll gcd(ll a, ll b) {if (b > a) {return gcd(b, a);} if (b == 0) {return a;} return gcd(b, a % b);}
 
 void solve(){
-    int n;
-    cin>>n;
-    ll a;
-    vector<int> aE(n);
-    vector<int> aO(n);
-    int k=0;
-    int w=0;
-    for(int i=0;i<n;i++){
-        cin>>a;
-        if(a%2==0){
-            aE[k]=a;
-            k++;
-        }
-        else {
-            aO[w]=a;
-            w++;
-        }
-    }
-    sort(aE.begin(), aE.end(), greater<int>());
-    sort(aO.begin(), aO.end(), greater<int>());
-    debug(aE);
-    debug(aO);
-    int totalTurns=0;
-    int i=0, j=0;
+    string s1;
+    getline(cin, s1);
+    ll n = s1.length();
     ll res=0;
-    bool alicePlay=true;
-    while(totalTurns < n){
-        debug(i);
-        debug(j);
-        debug(totalTurns);
-        debug(res);
-        debug("---------");
-        if(alicePlay){
-            if(i<aE.size()){
-                if(aE[i] >= aO[j]){
-                    res+=aE[i];
-                    i++;
-                }else j++;
-            }else j++;
-            alicePlay=false;
-        }else{
-            if(j<aO.size()){
-                if(aO[j] >= aE[i]){
-                    res-=aO[j];
-                    j++;
-                }else i++;
-            }else i++;
-            alicePlay=true;
+    ll aux=0;
+    for(int i=0;i<n;i++){
+        if(s1[i]=='+') aux++;
+        else aux--;
+        if(aux<0){
+            res+=i+1;
+            aux=0;
         }
-        totalTurns++;
     }
-    if(res > 0) cout<<"Alice";
-    else if(res == 0) cout<<"Tie";
-    else cout<<"Bob";
-    cout<<endl;
+    cout<<res+n<<endl;
 }
 
 int main(){
@@ -132,6 +91,7 @@ int main(){
     //freopen("output.txt", "w", stdout);
     int t;
     cin>>t;
+    cin.ignore();
     //t = 1;
     while(t--){
         solve();

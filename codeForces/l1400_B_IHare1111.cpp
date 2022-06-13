@@ -14,6 +14,9 @@
 #include<sstream>
 #include<tuple>
 #include<chrono>
+#include <cstdlib>
+#include <cstring>
+
 
 using namespace std;
 using namespace chrono;
@@ -64,60 +67,42 @@ template <class T, class V> void _print(map <T, V> v) {cerr << "[ "; for (auto i
 ll gcd(ll a, ll b) {if (b > a) {return gcd(b, a);} if (b == 0) {return a;} return gcd(b, a % b);}
 
 void solve(){
+    string s1;
+    getline(cin, s1);
     int n;
-    cin>>n;
-    ll a;
-    vector<int> aE(n);
-    vector<int> aO(n);
-    int k=0;
-    int w=0;
-    for(int i=0;i<n;i++){
-        cin>>a;
-        if(a%2==0){
-            aE[k]=a;
-            k++;
-        }
-        else {
-            aO[w]=a;
-            w++;
-        }
+    queue<ll> q1;
+    ll val = stoll(s1,nullptr,10);
+    q1.push(val);
+    bool existAns=false;
+    while(!q1.empty() && !existAns){
+        val = q1.front();
+        s1 = to_string(val);
+        n = s1.length();
+        ll res = val;
+        ll j_11=11;
+        for(int j=1;j<n;j++){
+            if(j_11>res) break;
+            if(res%j_11==0){
+                existAns = true;
+                break;
+            } 
+            j_11 *= 10;
+            j_11 += 1;
+        } 
+        ll p11 = 11;
+        int i = 2;
+        do{
+            res = val - p11;
+            if(res<0) break;
+            q1.push(res);
+            p11 *= 10;
+            p11 += 1;
+            i++;
+        }while(i<=n);
+        q1.pop();
     }
-    sort(aE.begin(), aE.end(), greater<int>());
-    sort(aO.begin(), aO.end(), greater<int>());
-    debug(aE);
-    debug(aO);
-    int totalTurns=0;
-    int i=0, j=0;
-    ll res=0;
-    bool alicePlay=true;
-    while(totalTurns < n){
-        debug(i);
-        debug(j);
-        debug(totalTurns);
-        debug(res);
-        debug("---------");
-        if(alicePlay){
-            if(i<aE.size()){
-                if(aE[i] >= aO[j]){
-                    res+=aE[i];
-                    i++;
-                }else j++;
-            }else j++;
-            alicePlay=false;
-        }else{
-            if(j<aO.size()){
-                if(aO[j] >= aE[i]){
-                    res-=aO[j];
-                    j++;
-                }else i++;
-            }else i++;
-            alicePlay=true;
-        }
-        totalTurns++;
-    }
-    if(res > 0) cout<<"Alice";
-    else if(res == 0) cout<<"Tie";
-    else cout<<"Bob";
+    if(existAns) cout<<"YES";
+    else cout<<"NO";
     cout<<endl;
 }
 
@@ -133,6 +118,7 @@ int main(){
     int t;
     cin>>t;
     //t = 1;
+    cin.ignore();
     while(t--){
         solve();
     }
