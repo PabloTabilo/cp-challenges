@@ -1,0 +1,92 @@
+a [ -1 1 1 1 -1 -1 -1 -1 1 ]
+dp [ 2 1 2 1 0 -1 -1 -1 1 ]
+"in" in
+v 0
+to 1
+dp [ 1 2 2 1 0 -1 -1 -1 1 ]
+"next-child" next-child
+"in" in
+v 1
+to 0
+to 5
+dp [ 1 2 2 1 0 1 -1 -1 1 ]
+"next-child" next-child
+"in" in
+v 5
+to 1
+to 7
+dp [ 1 2 2 1 0 1 -1 0 1 ]
+"next-child" next-child
+"in" in
+v 7
+to 5
+"comeback to old dp" comeback to old dp
+dp [ 1 2 2 1 0 1 -1 -1 1 ]
+v 5
+to 7
+"-- finish --" -- finish --
+"comeback to old dp" comeback to old dp
+dp [ 1 2 2 1 0 -1 -1 -1 1 ]
+v 1
+to 5
+"-- finish --" -- finish --
+"comeback to old dp" comeback to old dp
+dp [ 2 1 2 1 0 -1 -1 -1 1 ]
+v 0
+to 1
+"-- finish --" -- finish --
+to 2
+dp [ 0 1 2 1 0 -1 -1 -1 1 ]
+"next-child" next-child
+"in" in
+v 2
+to 0
+to 3
+dp [ 0 1 1 2 0 -1 -1 -1 1 ]
+"next-child" next-child
+"in" in
+v 3
+to 2
+to 6
+dp [ 0 1 1 2 0 -1 1 -1 1 ]
+"next-child" next-child
+"in" in
+v 6
+to 3
+"comeback to old dp" comeback to old dp
+dp [ 0 1 1 2 0 -1 -1 -1 1 ]
+v 3
+to 6
+"-- finish --" -- finish --
+"comeback to old dp" comeback to old dp
+dp [ 0 1 2 1 0 -1 -1 -1 1 ]
+v 2
+to 3
+"-- finish --" -- finish --
+to 4
+dp [ 0 1 2 1 2 -1 -1 -1 1 ]
+"next-child" next-child
+"in" in
+v 4
+to 2
+to 8
+dp [ 0 1 2 1 1 -1 -1 -1 2 ]
+"next-child" next-child
+"in" in
+v 8
+to 4
+"comeback to old dp" comeback to old dp
+dp [ 0 1 2 1 2 -1 -1 -1 1 ]
+v 4
+to 8
+"-- finish --" -- finish --
+"comeback to old dp" comeback to old dp
+dp [ 0 1 2 1 0 -1 -1 -1 1 ]
+v 2
+to 4
+"-- finish --" -- finish --
+"comeback to old dp" comeback to old dp
+dp [ 2 1 2 1 0 -1 -1 -1 1 ]
+v 0
+to 2
+"-- finish --" -- finish --
