@@ -34,5 +34,14 @@ class Node:
             error = "The number of referencies is max, in this case: {} or the specific position is imposible, the position is : {}".format(self.n, spec_pos)
             raise WhereIsError(error)
 
+class BinaryNode(Node):
+    def __init__(self, data=0, num_ref=2):
+        super().__init__(data,num_ref)
+        self.curr_h = 0
+    
+    def set_curr_height(self, c_h):
+        self.curr_h = c_h
 
+    def get_curr_height(self):
+        return self.curr_h
 
