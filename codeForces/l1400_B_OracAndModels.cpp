@@ -63,52 +63,68 @@ template <class T, class V> void _print(map <T, V> v) {cerr << "[ "; for (auto i
 /*---------------------------------------------------------------------------------------------------------------------------*/
 ll gcd(ll a, ll b) {if (b > a) {return gcd(b, a);} if (b == 0) {return a;} return gcd(b, a % b);}
 
-void prA(vector<int> a, int n){
-    cout<<endl;
-    for(int i=0;i<n;i++) cout<<a[i]<<" ";
+void printArr(ll dp[], int n){
+    cout<<'\n';
+    for(int i=0;i<n;i++){
+        cout<<dp[i]<<" ";
+    }
+    cout<<'\n';
+}
+// Function to print the divisors
+void printDivisors(int n)
+{
+    cout<<"divisors of n="<<n<<endl;
+    // Note that this loop runs till square root
+    for (int i=1; i*i<=n; i++)
+    {
+        if (n%i == 0)
+        {
+            // If divisors are equal, print only one
+            if (n/i == i)
+                cout <<" "<< i;
+ 
+            else // Otherwise print both
+                cout << " "<< i << " " << n/i;
+        }
+    }
     cout<<endl;
 }
-
 void solve(){
-    bool debug=false;
     int n;
-    int k;
-    cin>>n>>k;
-    vector<int>a(n);
-    vector<int>t(n);
-    for(int i=0;i<n;i++) cin>>a[i];
-    for(int i=0;i<n;i++) cin>>t[i];
-    
-    vector<int> acum(n);
-    vector<int> p(n);
-    vector<int> s(n);
-    p[0] = a[0]*t[0];
-    for(int i=1;i<n;i++) p[i] += a[i]*t[i] + p[i-1];
-    s[n-1] = a[n-1]*t[n-1];
-    for(int i=n-2;i>=0;i--) s[i] += a[i]*t[i] + s[i+1];
-    acum[0] = a[0];
-    for(int i=1;i<n;i++) acum[i] += a[i] + acum[i-1];
-
-    ll res = p[n-1];
-    ll suma1 = 0;
-    if(debug) prA(p,n);
-    if(debug) prA(s,n);
-    if(debug) prA(acum,n);
-    for(int i=0;i<=n-k;i++){
-        if(debug) cout<<"i:"<<i<<endl;
-        if(debug) cout<<"k:"<<i<<endl;
-        if(i==0){
-            if(i+k>=n) suma1 = acum[i+k-1];
-            else suma1 = acum[i+k-1] + s[i+k]; 
-        }else if(i+k>=n){
-            suma1 = acum[i+k-1] - acum[i-1] + p[i-1]; 
-        }else{
-            suma1 = acum[i+k-1] - acum[i-1] + p[i-1] + s[i+k]; 
-        }
-        if(debug) cout<<suma1<<endl;
-        res = max(res,suma1);
+    cin>>n;
+    vector<ll> a(n+1);
+    vector<ll> dp(n+1);
+    a[0]=0;
+    dp[0]=0;
+    for(int i=1;i<=n;i++){
+        cin>>a[i];
+        dp[i] = 0;
     }
-     cout<<res<<endl;
+    dp[1] = 1;
+    ll res = 1;
+    for(int i=2;i<=n;i++){
+        //cout<<"i:"<<i<<endl;
+        for(int j = 1; j*j <= i; j++){
+            //cout<<"j:"<<j<<"; a[j]:"<<a[j]<<"; a[i]:"<<a[i]<<endl;
+            if(i%j==0){
+                if(a[j] < a[i]){
+                    //cout<<">> j:"<<j<<"; a[j]:"<<a[j]<<" < a[i]:"<<a[i]<<endl;
+                    dp[i] = max(dp[i],dp[j]);
+                }
+                if(a[i/j] < a[i]){
+                    //cout<<">> i/j:"<<i/j<<"; a[i/j]:"<<a[i/j]<<" < a[i]:"<<a[i]<<endl;
+                    dp[i] = max(dp[i], dp[i/j]);
+                }
+            }
+        }
+        dp[i]+=1;
+        res = max(res, dp[i]);
+        //cout<<"dp[i]="<<dp[i]<<endl;
+        //cout<<endl;
+    }
+    debug(a);
+    debug(dp);
+    cout<<res<<endl;
 }
 
 int main(){
@@ -118,11 +134,11 @@ int main(){
     fastio();
     auto start1 = high_resolution_clock::now();
     // read & write file
-    //freopen("input.txt", "r", stdin);
-    //freopen("output.txt", "w", stdout);
+    // freopen("input.txt", "r", stdin);
+    // freopen("output.txt", "w", stdout);
     int t;
-    //cin>>t;
-    t = 1;
+    cin>>t;
+    //t = 1;
     while(t--){
         solve();
     }

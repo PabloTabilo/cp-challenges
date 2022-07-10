@@ -1,11 +1,8 @@
-diff [ -2 -2 -1 0 3 5 ]
-i 4
-diff[i] 3
-complement -2
-low_n 0
-res 4
-i 5
-diff[i] 5
-complement -4
-low_n 0
-res 9
+a [ 0 5 3 4 6 ]
+dp [ 0 1 1 1 2 ]
+a [ 0 1 4 2 3 6 4 9 ]
+dp [ 0 1 2 2 2 2 3 2 ]
+a [ 0 5 4 3 2 1 ]
+dp [ 0 1 1 1 1 1 ]
+a [ 0 9 ]
+dp [ 0 1 ]
