@@ -136,33 +136,50 @@ void get_route(vector<vector<int>> dp, vector<vector<int>> & t, int m, int x, in
     }
 }
 
+
+ll get_score_bob(vector<vector<int>> a, int m){
+    ll b;
+    vector<ll> up(m,0);
+    vector<ll> low(m,0);
+    for(int i=m-2;i>=0;i--) up[i] = a[0][i+1]+up[i+1];
+    for(int i=1;i<m;i++) low[i] = a[1][i-1]+low[i-1];
+    for(int i=0;i<m;i++){
+        if(i==0) b = max(up[i],low[i]);
+        else b = min(b,max(up[i],low[i]));
+    }
+    return b;
+}
+
+
 void solve(){
     int m;
     cin>>m;
     vector<vector<int>> a(2,vector<int>(m,0));
-    vector<vector<int>> dp(2,vector<int>(m,0));
-    vector<vector<int>> trackme(2,vector<int>(m,0));
-    vector<vector<int>> t(2,vector<int>(m,0));
+    //vector<vector<int>> dp(2,vector<int>(m,0));
+    //vector<vector<int>> trackme(2,vector<int>(m,0));
+    //vector<vector<int>> t(2,vector<int>(m,0));
     for(int i=0;i<2*m;i++){
         if(i<m){
             cin>>a[0][i];
-            dp[0][i]=a[0][i];
+            //dp[0][i]=a[0][i];
         }else{ 
             cin>>a[1][i-m];
-            dp[1][i-m]=a[1][i-m];
+            //dp[1][i-m]=a[1][i-m];
         }
     }
-    int costA = cc(dp,a,0,0,m,trackme,-1);
+    cout<<get_score_bob(a,m)<<endl;
+    //int costA = cc(dp,a,0,0,m,trackme,-1);
     //cout<<"costA="<<costA<<endl;
     //view_vec(trackme,m);
-    get_route(dp,t,m,0,0);
+    //get_route(dp,t,m,0,0);
     //view_vec(dp,m);
-    view_vec(t,m);
+    //view_vec(t,m);
     //int costB = cc(a,0,0,m,trackme,1);
     //view_vec(a,m);
     //view_vec(trackme,m);
     //cout<<"costB="<<costB<<endl;
     //view_vec(trackme,m);
+    /*
     int c = get_sum_corner(a,m,t);
     if(m==1) c=0;
     int r1s=0;
@@ -173,10 +190,11 @@ void solve(){
     }
     if(r1s==0) r1s=VAL;
     if(r2s==0) r2s=VAL;
-    //cout<<"c="<<c<<endl;
-    //cout<<"r1s="<<r1s<<endl;
-    //cout<<"r2s="<<r2s<<endl;
+    cout<<"c="<<c<<endl;
+    cout<<"r1s="<<r1s<<endl;
+    cout<<"r2s="<<r2s<<endl;
     cout<<min(c,min(r1s,r2s))<<endl;
+    */
     // Ya tengo la ruta opt
     // 1. Saco score con val dif a ruta opt
     // entra a while
