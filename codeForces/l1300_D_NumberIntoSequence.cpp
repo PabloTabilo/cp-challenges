@@ -63,50 +63,66 @@ template <class T, class V> void _print(map <T, V> v) {cerr << "[ "; for (auto i
 /*---------------------------------------------------------------------------------------------------------------------------*/
 ll gcd(ll a, ll b) {if (b > a) {return gcd(b, a);} if (b == 0) {return a;} return gcd(b, a % b);}
 
-void solve(){
-    ll a, b, n, m;
-    cin>>a;
-    cin>>b;
-    cin>>n;
-    cin>>m;
-    bool impos = false;
-    ll diff=0;
-    if(a+b<n+m) impos = true;
-    else{
-       while(n+m>0 && !impos){
-           if(b > n && a > m) break;
-           if(a<b){
-                diff=b-a;
-                if(diff>n && n>0) diff=n;
-                b-=diff;
-                n-=diff;
-           }else if(a>b){
-                diff=a-b;
-                if(diff>m && m>0) diff=m;
-                a-=diff;
-                m-=diff;
-           }else{
-                if(n==m) break;
-                else if(n>m){
-                    diff=n-m;
-                    n-=diff;
-                    b-=diff;
-                }else{
-                    diff=m-n;
-                    m-=diff;
-                    a-=diff;
-                }
-           } 
-           if(a<0||b<0) impos=true;
-           if(n<0||m<0) impos=true;
-           //cout<<"a="<<a<<"; b="<<b<<"; n="<<n<<"; m="<<m<<endl;
-       } 
-    }
-    
-    if(!impos) cout<<"Yes";
-    else cout<<"No";
-    cout<<endl;
+bool isNotDiv(ll p, ll c){
+    if(max(c,p)%min(c,p)!=0) return true;
+    return false;
+}
 
+void pv(vector<ll> v){
+    int n=v.size();
+    for(int i=0;i<n;i++) cout<<v[i]<<" ";
+    cout<<endl;
+}
+
+void solve(){
+    ll n;
+    cin>>n;
+    ll i=2;
+    vector<ll> res, best_res;
+    ll t=n;
+    int lim=sqrt(n), p;
+    bool debugme=false;
+    do{
+        res.clear();
+        while(n%i==0 && n>1){
+            if(debugme) cout<<"i: "<<i<<"; n: "<<n<<endl;
+            if(res.size()>1){
+                if(isNotDiv(res.back(), i)){
+                    // sacar a previous y no agregar current
+                    res.pop_back(); 
+                    break;
+                }
+            }
+            res.push_back(i);
+            n/=i;
+            if(debugme) cout<<"n/=i: "<<n<<endl;
+            if((n>1&&n%i!=0)||(n/i)%i!=0||n/i==1){
+                if(isNotDiv(res.back(),n)){
+                    res.pop_back();
+                    break;
+                }
+                res.push_back(n);
+                break;
+            } 
+        }
+        n=t;
+        if(res.size()>0){
+            if(best_res.size()>0){
+                if(debugme) pv(best_res);
+                if(debugme) pv(res);
+                if(best_res.size()<res.size()) best_res=res;
+            }else best_res=res;
+        }
+        i++;
+    }while(i<=lim);
+    int m=best_res.size();
+    if(m==0){
+        m=1;
+        best_res.push_back(t);
+    }
+    cout<<m<<endl;
+    for(int i=0;i<m;i++) cout<<best_res[i]<<" ";
+    cout<<endl;
 }
 
 int main(){

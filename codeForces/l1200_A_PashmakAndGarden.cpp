@@ -64,49 +64,34 @@ template <class T, class V> void _print(map <T, V> v) {cerr << "[ "; for (auto i
 ll gcd(ll a, ll b) {if (b > a) {return gcd(b, a);} if (b == 0) {return a;} return gcd(b, a % b);}
 
 void solve(){
-    ll a, b, n, m;
-    cin>>a;
-    cin>>b;
-    cin>>n;
-    cin>>m;
-    bool impos = false;
-    ll diff=0;
-    if(a+b<n+m) impos = true;
-    else{
-       while(n+m>0 && !impos){
-           if(b > n && a > m) break;
-           if(a<b){
-                diff=b-a;
-                if(diff>n && n>0) diff=n;
-                b-=diff;
-                n-=diff;
-           }else if(a>b){
-                diff=a-b;
-                if(diff>m && m>0) diff=m;
-                a-=diff;
-                m-=diff;
-           }else{
-                if(n==m) break;
-                else if(n>m){
-                    diff=n-m;
-                    n-=diff;
-                    b-=diff;
-                }else{
-                    diff=m-n;
-                    m-=diff;
-                    a-=diff;
-                }
-           } 
-           if(a<0||b<0) impos=true;
-           if(n<0||m<0) impos=true;
-           //cout<<"a="<<a<<"; b="<<b<<"; n="<<n<<"; m="<<m<<endl;
-       } 
+    int x1, y1, x2, y2;
+    int x3, y3, x4, y4;
+    cin>>x1>>y1>>x2>>y2;
+    bool poss=true;
+    int a;
+    if(y1==y2){
+        a=abs(x2-x1);
+        x3=x1, y3=y1;
+        x4=x2, y4=y2;
+        if(y3+a>1000) y3-=a, y4-=a;
+        else y3+=a, y4+=a;
+    }else if(x1==x2){
+        a=abs(y2-y1);
+        x3=x1, y3=y1;
+        x4=x2, y4=y2;
+        if(x3+a>1000) x3-=a, x4-=a;
+        else x3+=a, x4+=a;
+    }else{
+        if(abs(x2-x1)==abs(y2-y1)){
+            x3=x1, y3=y2;
+            x4=x2, y4=y1;
+        }else{
+            poss=false;
+            cout<<-1;
+        }
     }
-    
-    if(!impos) cout<<"Yes";
-    else cout<<"No";
+    if(poss)cout<<x3<<" "<<y3<<" "<<x4<<" "<<y4;
     cout<<endl;
-
 }
 
 int main(){
@@ -119,8 +104,8 @@ int main(){
     //freopen("input.txt", "r", stdin);
     //freopen("output.txt", "w", stdout);
     int t;
-    cin>>t;
-    //t = 1;
+    //cin>>t;
+    t = 1;
     while(t--){
         solve();
     }
